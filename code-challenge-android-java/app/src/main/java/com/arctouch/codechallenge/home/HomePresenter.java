@@ -29,7 +29,17 @@ public class HomePresenter extends BasePresenter {
                     Cache.setGenres(response.genres);
                 });
 
-        api.upcomingMovies(TmdbApi.API_KEY, TmdbApi.DEFAULT_LANGUAGE, 1L, TmdbApi.DEFAULT_REGION)
+        loadPage(1L);
+    }
+
+    public void movieClicked(Movie movie) {
+        homeView.navigateToMovieDetailScreen(movie);
+    }
+
+    public void loadPage(long page) {
+        System.out.println("page = " + page);
+
+        api.upcomingMovies(TmdbApi.API_KEY, TmdbApi.DEFAULT_LANGUAGE, page, TmdbApi.DEFAULT_REGION)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
@@ -44,9 +54,5 @@ public class HomePresenter extends BasePresenter {
 
                     homeView.showMovies(response.results);
                 });
-    }
-
-    public void movieClicked(Movie movie) {
-        homeView.navigateToMovieDetailScreen(movie);
     }
 }

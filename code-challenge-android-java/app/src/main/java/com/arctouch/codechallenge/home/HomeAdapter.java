@@ -15,16 +15,21 @@ import com.arctouch.codechallenge.util.MovieImageUrlBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     private HomePresenter homePresenter;
-    private List<Movie> movies;
+    private List<Movie> movies = new ArrayList<>();
 
-    public HomeAdapter(HomePresenter homePresenter, List<Movie> movies) {
+    public HomeAdapter(HomePresenter homePresenter) {
         this.homePresenter = homePresenter;
-        this.movies = movies;
+    }
+
+    public void addMovies(List<Movie> movies) {
+        this.movies.addAll(movies);
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -77,4 +82,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.bind(movie);
         holder.itemView.setOnClickListener(view -> homePresenter.movieClicked(movie));
     }
+
+
 }

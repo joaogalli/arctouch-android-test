@@ -19,9 +19,11 @@ import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
+    private HomePresenter homePresenter;
     private List<Movie> movies;
 
-    public HomeAdapter(List<Movie> movies) {
+    public HomeAdapter(HomePresenter homePresenter, List<Movie> movies) {
+        this.homePresenter = homePresenter;
         this.movies = movies;
     }
 
@@ -48,7 +50,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             releaseDateTextView.setText(movie.releaseDate);
 
             String posterPath = movie.posterPath;
-            if (TextUtils.isEmpty(posterPath) == false) {
+            if (!TextUtils.isEmpty(posterPath)) {
                 Glide.with(itemView)
                         .load(movieImageUrlBuilder.buildPosterUrl(posterPath))
                         .apply(new RequestOptions().placeholder(R.drawable.ic_image_placeholder))
@@ -71,6 +73,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(movies.get(position));
+        Movie movie = movies.get(position);
+        holder.bind(movie);
+        holder.itemView.setOnClickListener(view -> homePresenter.movieClicked(movie));
     }
 }

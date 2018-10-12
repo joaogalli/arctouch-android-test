@@ -8,4 +8,6 @@ public interface HomeView {
     void navigateToMovieDetailScreen(Movie movie);
 
     void showMovies(List<Movie> results);
+
+    void showErrorMessage(int message);
 }

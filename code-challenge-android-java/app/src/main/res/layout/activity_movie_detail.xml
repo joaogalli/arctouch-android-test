@@ -13,8 +13,7 @@
         android:adjustViewBounds="true"
         android:importantForAccessibility="no"
         android:scaleType="centerCrop"
-        android:alpha="0.2"
-        android:src="@drawable/ic_image_placeholder" />
+        android:alpha="0.2" />
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -2,6 +2,7 @@ package com.arctouch.codechallenge.api;
 
 import com.arctouch.codechallenge.model.GenreResponse;
 import com.arctouch.codechallenge.model.Movie;
+import com.arctouch.codechallenge.model.SearchMoviesResponse;
 import com.arctouch.codechallenge.model.UpcomingMoviesResponse;
 
 import io.reactivex.Observable;
@@ -26,6 +27,15 @@ public interface TmdbApi {
     Observable<UpcomingMoviesResponse> upcomingMovies(
             @Query("api_key") String apiKey,
             @Query("language") String language,
+            @Query("page") Long page,
+            @Query("region") String region
+    );
+
+    @GET("search/movie")
+    Observable<SearchMoviesResponse> searchMovies(
+            @Query("api_key") String apiKey,
+            @Query("language") String language,
+            @Query("query") String query,
             @Query("page") Long page,
             @Query("region") String region
     );

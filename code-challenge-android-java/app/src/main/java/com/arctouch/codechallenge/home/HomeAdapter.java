@@ -32,6 +32,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
+    public void clearMovies() {
+        this.movies.clear();
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private final MovieImageUrlBuilder movieImageUrlBuilder = new MovieImageUrlBuilder();

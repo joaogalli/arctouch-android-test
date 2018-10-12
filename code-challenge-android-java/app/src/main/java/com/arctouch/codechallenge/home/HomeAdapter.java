@@ -15,14 +15,30 @@ import com.arctouch.codechallenge.util.MovieImageUrlBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
-    private List<Movie> movies;
+    private HomePresenter homePresenter;
+    private List<Movie> movies = new ArrayList<>();
 
-    public HomeAdapter(List<Movie> movies) {
-        this.movies = movies;
+    public HomeAdapter(HomePresenter homePresenter) {
+        this.homePresenter = homePresenter;
+    }
+
+    public void addMovies(List<Movie> movies) {
+        this.movies.addAll(movies);
+        notifyDataSetChanged();
+    }
+
+    public void clearMovies() {
+        this.movies.clear();
+    }
+
+    public ArrayList<Movie> getSerializableMovies() {
+        return new ArrayList<>(movies);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -48,7 +64,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             releaseDateTextView.setText(movie.releaseDate);
 
             String posterPath = movie.posterPath;
-            if (TextUtils.isEmpty(posterPath) == false) {
+            if (!TextUtils.isEmpty(posterPath)) {
                 Glide.with(itemView)
                         .load(movieImageUrlBuilder.buildPosterUrl(posterPath))
                         .apply(new RequestOptions().placeholder(R.drawable.ic_image_placeholder))
@@ -71,6 +87,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(movies.get(position));
+        Movie movie = movies.get(position);
+        holder.bind(movie);
+        holder.itemView.setOnClickListener(view -> homePresenter.movieClicked(movie));
     }
+
+
 }

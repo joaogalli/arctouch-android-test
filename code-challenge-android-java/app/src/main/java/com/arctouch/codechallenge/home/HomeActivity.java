@@ -3,7 +3,9 @@ package com.arctouch.codechallenge.home;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,9 +23,12 @@ import com.arctouch.codechallenge.detail.MovieDetailActivity;
 import com.arctouch.codechallenge.model.Movie;
 import com.arctouch.codechallenge.util.EndlessScrollListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements HomeView {
+
+    private static final String MOVIES_STATE = "movies_state";
 
     private HomePresenter homePresenter;
     private RecyclerView recyclerView;
@@ -49,7 +54,13 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
         buildRecyclerView();
 
-        homePresenter.onViewCreated();
+        if (savedInstanceState != null && savedInstanceState.containsKey(MOVIES_STATE)) {
+            ArrayList<Movie> movies = (ArrayList<Movie>) savedInstanceState.getSerializable(MOVIES_STATE);
+            homeAdapter.addMovies(movies);
+            progressBar.setVisibility(View.GONE);
+        } else {
+            homePresenter.onViewCreated();
+        }
     }
 
     private void buildRecyclerView() {
@@ -73,7 +84,16 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     }
 
     @Override
-    public void showMovies(List<Movie> results) {
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        ArrayList<Movie> movies = homeAdapter.getSerializableMovies();
+        if (movies != null)
+            outState.putSerializable(MOVIES_STATE, movies);
+    }
+
+    @Override
+    public void addMoviesPage(List<Movie> results) {
         currentPage++;
 
         boolean isLastPage = results.isEmpty();

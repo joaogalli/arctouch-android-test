@@ -15,6 +15,7 @@ import com.arctouch.codechallenge.util.MovieImageUrlBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     public void clearMovies() {
         this.movies.clear();
+    }
+
+    public ArrayList<Movie> getSerializableMovies() {
+        return new ArrayList<>(movies);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

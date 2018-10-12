@@ -49,7 +49,7 @@ public class HomePresenter extends BasePresenter {
                         }
                     }
 
-                    homeView.showMovies(response.results);
+                    homeView.addMoviesPage(response.results);
                 }, throwable -> {
                     homeView.showErrorMessage(R.string.errorLoadingMovies);
                 });
@@ -69,7 +69,7 @@ public class HomePresenter extends BasePresenter {
                         }
                     }
 
-                    homeView.showMovies(response.results);
+                    homeView.addMoviesPage(response.results);
                 }, throwable -> {
                     homeView.showErrorMessage(R.string.errorLoadingMovies);
                 });
